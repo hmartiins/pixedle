@@ -29,9 +29,14 @@ export async function GET(req: NextRequest) {
 
   try {
     const png = await renderPixelatedEmoji(target.emoji, level);
-    // NextResponse expects a BodyInit, which doesn't include Node's Buffer
-    // even though Buffer extends Uint8Array — wrap in a non-copying view.
-    const body = new Uint8Array(png.buffer, png.byteOffset, png.byteLength);
+    // @types/node 20.19+ types Buffer as Uint8Array<ArrayBufferLike>, which
+    // TS won't accept as BodyInit (BodyInit's BufferSource needs the concrete
+    // ArrayBuffer, not the SharedArrayBuffer-permissive ArrayBufferLike).
+    // `new Uint8Array(N)` returns Uint8Array<ArrayBuffer>, and .set() accepts
+    // any ArrayLike<number> regardless of its underlying buffer generic — so
+    // a one-shot copy gives us a clean BodyInit without an `as` cast.
+    const body = new Uint8Array(png.byteLength);
+    body.set(png);
     return new NextResponse(body, {
       status: 200,
       headers: {

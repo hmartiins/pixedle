@@ -112,7 +112,8 @@ export default function Home() {
           }
         }
       } catch {
-        if (!cancelled) setError("Não consegui carregar o jogo. Tente recarregar a página.");
+        if (!cancelled)
+          setError("Não consegui carregar o jogo. Tente recarregar a página.");
       }
     }
     load();
@@ -205,7 +206,9 @@ export default function Home() {
     }).join("");
     const lines = [
       `Pixedle — ${todayLabel}`,
-      won ? `Acertei em ${attempts}/${MAX_ATTEMPTS}` : `Não acertei (${MAX_ATTEMPTS}/${MAX_ATTEMPTS})`,
+      won
+        ? `Acertei em ${attempts}/${MAX_ATTEMPTS}`
+        : `Não acertei (${MAX_ATTEMPTS}/${MAX_ATTEMPTS})`,
       grid,
       "https://pixedle.app",
     ].join("\n");
@@ -228,7 +231,9 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-6 sm:py-10">
       <header className="mb-6 w-full text-center">
-        <h1 className="pixel-text text-2xl text-neonsoft sm:text-4xl">PIXEDLE</h1>
+        <h1 className="pixel-text text-2xl text-neonsoft sm:text-4xl">
+          PIXEDLE
+        </h1>
         <p className="mt-2 text-[9px] text-soft/70 sm:text-[11px]">
           adivinhe o emoji do dia • {todayLabel}
         </p>
