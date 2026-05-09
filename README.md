@@ -2,9 +2,9 @@
 
 > O desafio diário de adivinhar o emoji escondido. A cada erro, ele fica um pouco menos pixelado.
 
-Pixedle é um joguinho web estilo Wordle. Todo dia o servidor escolhe um emoji secreto. O jogador vê uma versão **muito** pixelada e tem 6 tentativas — a cada erro, o pixel block diminui e o emoji fica mais nítido. A resposta nunca chega ao cliente em texto: o servidor renderiza o PNG já borrado e devolve só o bitmap.
+Pixedle é um joguinho web estilo Wordle. Todo dia o servidor escolhe um emoji secreto. O jogador vê uma versão **muito** pixelada e tem 6 tentativas. A cada erro, o pixel block diminui e o emoji fica mais nítido. A resposta nunca chega ao cliente em texto: o servidor renderiza o PNG já borrado e devolve só o bitmap.
 
-![pixedle screenshot placeholder](docs/screenshot.png)
+![pixedle screenshot placeholder](.github/assets//screenshot.png)
 
 ## Como funciona
 
@@ -33,9 +33,9 @@ Acesse <http://localhost:3000>. (Se a porta 3000 estiver em uso, o Next sobe em 
 
 ### Variáveis de ambiente
 
-| Nome              | Obrigatória? | Descrição                                                  |
-| ----------------- | ------------ | ---------------------------------------------------------- |
-| `PIXEDLE_SECRET`  | em produção  | Chave HMAC usada para assinar o cookie de sessão. Em dev, há um fallback embutido que **não deve ser usado em produção**. |
+| Nome             | Obrigatória? | Descrição                                                                                                                 |
+| ---------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `PIXEDLE_SECRET` | em produção  | Chave HMAC usada para assinar o cookie de sessão. Em dev, há um fallback embutido que **não deve ser usado em produção**. |
 
 Crie um `.env.local` para desenvolvimento (já está no `.gitignore`):
 
@@ -79,12 +79,12 @@ lib/
 
 ```jsonc
 {
-  "pixelLevel": 1,        // 1 (mais pixelado) — 6 (nítido)
+  "pixelLevel": 1, // 1 (mais pixelado) — 6 (nítido)
   "attemptsLeft": 6,
   "alreadyWon": false,
   "gameOver": false,
   "history": [],
-  "maxAttempts": 6
+  "maxAttempts": 6,
 }
 ```
 
@@ -100,7 +100,7 @@ Body: `{ "guess": "cachorro" }` (nome em pt-BR, alias ou o próprio emoji colado
   "attemptsLeft": 5,
   "pixelLevel": 2,
   "gameOver": false,
-  "history": ["cachorro"]
+  "history": ["cachorro"],
 }
 ```
 
@@ -130,14 +130,3 @@ Todas as rotas são `force-dynamic` e protegidas por rate limit por IP via `x-fo
 - **Buffer × BodyInit no TS recente.** `@types/node 20.19+` tipa `Buffer` com `ArrayBufferLike` (que aceita `SharedArrayBuffer`), incompatível com `BufferSource`/`BodyInit`. Copiamos para um `Uint8Array(byteLength)` concreto antes de passar ao `NextResponse`.
 - **Estado no cookie, não em memória.** Em produção, instâncias múltiplas precisariam compartilhar o estado da sessão se ele fosse in-memory; cookie HMAC torna o servidor stateless.
 - **`renderedCache` é por instância.** Em uma deploy serverless, cada cold start re-busca o PNG do Twemoji. Para escala maior, vale plugar Redis ou pré-renderizar diariamente.
-
-## Roadmap curto
-
-- [ ] Tela "fim de jogo" no servidor com `og-image` para link prévia.
-- [ ] PWA — instalar no homescreen.
-- [ ] Modo prática (gerar emoji aleatório fora da seed do dia).
-- [ ] Tradução: en-US/es-AR.
-
-## Licença
-
-MIT.
