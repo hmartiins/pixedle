@@ -649,7 +649,6 @@ export const EMOJIS: EmojiEntry[] = [
   { emoji: "🇲🇦", name: "bandeira de marrocos", aliases: ["marrocos"] },
   { emoji: "🇪🇬", name: "bandeira do egito", aliases: ["egito"] },
   { emoji: "🇰🇪", name: "bandeira do quenia", aliases: ["quenia"] },
-  { emoji: "🇿🇦", name: "bandeira da africa do sul", aliases: [] },
   { emoji: "🇹🇭", name: "bandeira da tailandia", aliases: ["tailandia"] },
   { emoji: "🇵🇭", name: "bandeira das filipinas", aliases: ["filipinas"] },
   { emoji: "🇻🇳", name: "bandeira do vietna", aliases: ["vietna"] },

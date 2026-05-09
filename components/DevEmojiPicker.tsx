@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { SuggestionItem } from "./GuessInput";
-
-type Props = {
-  emojis: SuggestionItem[];
-};
+import { EMOJIS } from "@/lib/emojis";
 
 const DEV_COOKIE = "dev_emoji";
 
@@ -23,12 +19,17 @@ function readDevCookie(): string | null {
   }
 }
 
-export function DevEmojiPicker({ emojis }: Props) {
+export function DevEmojiPicker() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [pending, setPending] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const allEmojis = useMemo(
+    () => EMOJIS.map((e) => ({ emoji: e.emoji, name: e.name })),
+    [],
+  );
 
   useEffect(() => {
     setActive(readDevCookie());
@@ -42,11 +43,11 @@ export function DevEmojiPicker({ emojis }: Props) {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return emojis;
-    return emojis.filter(
+    if (!q) return allEmojis;
+    return allEmojis.filter(
       (e) => e.name.toLowerCase().includes(q) || e.emoji.includes(q),
     );
-  }, [emojis, query]);
+  }, [allEmojis, query]);
 
   async function setDevEmoji(emoji: string | null) {
     setPending(true);

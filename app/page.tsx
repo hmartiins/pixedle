@@ -314,9 +314,7 @@ export default function Home() {
         />
       )}
 
-      {process.env.NODE_ENV === "development" && suggestions.length > 0 && (
-        <DevEmojiPicker emojis={suggestions} />
-      )}
+      {process.env.NODE_ENV === "development" && <DevEmojiPicker />}
     </main>
   );
 }
