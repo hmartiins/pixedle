@@ -95,6 +95,17 @@ body {
     0 0 0 2px rgba(250, 204, 21, 0.35);
 }
 
+/* iOS Safari auto-zooms on focus when an input's computed font-size is
+ * below 16px. Force at least 16px on mobile to suppress that behavior
+ * without touching the desktop sizing. */
+@media (max-width: 640px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 .pixel-canvas {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;

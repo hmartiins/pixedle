@@ -80,8 +80,8 @@ export function GuessInput({ suggestions, disabled, onSubmit }: Props) {
   const showList = focused && matches.length > 0;
 
   return (
-    <div ref={wrapRef} className="relative w-full">
-      <div className="flex gap-2">
+    <div ref={wrapRef} className="flex w-full flex-col gap-2">
+      <div className="relative w-full">
         <input
           ref={inputRef}
           type="text"
@@ -90,47 +90,47 @@ export function GuessInput({ suggestions, disabled, onSubmit }: Props) {
           onFocus={() => setFocused(true)}
           onKeyDown={onKeyDown}
           disabled={disabled}
-          placeholder="Digite o nome ou cole um emoji…"
+          placeholder="Digite o nome ou um emoji…"
           aria-label="Sua tentativa"
           autoComplete="off"
           spellCheck={false}
-          className="pixel-input flex-1 px-3 py-3 text-xs sm:text-sm"
+          className="pixel-input w-full px-3 py-3 text-xs sm:text-sm"
           maxLength={80}
         />
-        <button
-          type="button"
-          onClick={() => commit(value)}
-          disabled={disabled || !value.trim()}
-          className="pixel-button px-4 py-3 text-xs sm:text-sm"
-        >
-          Chutar
-        </button>
+        {showList && (
+          <ul
+            className="suggestion-list absolute left-0 right-0 top-full z-10 text-xs sm:text-sm"
+            role="listbox"
+          >
+            {matches.map((m, i) => (
+              <li
+                key={`${m.emoji}-${m.name}`}
+                role="option"
+                aria-selected={i === highlight}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  commit(m.name);
+                }}
+                onMouseEnter={() => setHighlight(i)}
+                className={`flex cursor-pointer items-center gap-3 px-3 py-2 ${
+                  i === highlight ? "bg-neon/40" : ""
+                }`}
+              >
+                <span className="text-2xl leading-none">{m.emoji}</span>
+                <span className="truncate">{m.name}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      {showList && (
-        <ul
-          className="suggestion-list absolute z-10 mt-0 w-full text-xs sm:text-sm"
-          role="listbox"
-        >
-          {matches.map((m, i) => (
-            <li
-              key={`${m.emoji}-${m.name}`}
-              role="option"
-              aria-selected={i === highlight}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                commit(m.name);
-              }}
-              onMouseEnter={() => setHighlight(i)}
-              className={`flex cursor-pointer items-center gap-3 px-3 py-2 ${
-                i === highlight ? "bg-neon/40" : ""
-              }`}
-            >
-              <span className="text-2xl leading-none">{m.emoji}</span>
-              <span className="truncate">{m.name}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <button
+        type="button"
+        onClick={() => commit(value)}
+        disabled={disabled || !value.trim()}
+        className="pixel-button w-full px-4 py-3 text-xs sm:text-sm"
+      >
+        Chutar
+      </button>
     </div>
   );
 }

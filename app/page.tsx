@@ -236,7 +236,7 @@ export default function Home() {
           PIXEDLE
         </h1>
         <p className="mt-2 text-[9px] text-soft/70 sm:text-[11px]">
-          adivinhe o emoji do dia • {todayLabel}
+          adivinhe o emoji do dia <br /> {todayLabel}
         </p>
       </header>
 
@@ -295,7 +295,7 @@ export default function Home() {
       )}
 
       <footer className="mt-auto pt-8 text-center text-[8px] text-soft/40 sm:text-[10px]">
-        feito com pixels e ☕ • novo desafio toda meia-noite
+        novo desafio toda meia-noite
       </footer>
 
       {revealed && (
