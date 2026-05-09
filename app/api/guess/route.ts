@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  dailySeed,
-  matchesEmoji,
-  MAX_ATTEMPTS,
-  pickDailyEmoji,
-} from "@/lib/daily";
+import { dailySeed, matchesEmoji, MAX_ATTEMPTS } from "@/lib/daily";
+import { getActiveEmoji } from "@/lib/active-emoji";
 import { readSession, writeSession } from "@/lib/session";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 import { getTrivia } from "@/lib/trivia";
@@ -42,7 +38,7 @@ export async function POST(req: NextRequest) {
   const state = readSession(today);
 
   if (state.won || state.attempts >= MAX_ATTEMPTS) {
-    const target = pickDailyEmoji();
+    const target = getActiveEmoji();
     return NextResponse.json({
       correct: state.won,
       attemptsLeft: Math.max(0, MAX_ATTEMPTS - state.attempts),
@@ -55,7 +51,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const target = pickDailyEmoji();
+  const target = getActiveEmoji();
   const correct = matchesEmoji(guess, target);
 
   if (correct) {

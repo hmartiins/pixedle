@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { DevEmojiPicker } from "@/components/DevEmojiPicker";
 import { GuessInput, type SuggestionItem } from "@/components/GuessInput";
 import { Hearts } from "@/components/Hearts";
 import { PixelCanvas } from "@/components/PixelCanvas";
@@ -311,6 +312,10 @@ export default function Home() {
           onShare={onShare}
           shareToast={shareToast}
         />
+      )}
+
+      {process.env.NODE_ENV === "development" && suggestions.length > 0 && (
+        <DevEmojiPicker emojis={suggestions} />
       )}
     </main>
   );

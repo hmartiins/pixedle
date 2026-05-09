@@ -84,3 +84,7 @@ export function writeSession(state: SessionState): void {
     maxAge: 60 * 60 * 36,
   });
 }
+
+export function clearSession(): void {
+  cookies().delete(COOKIE_NAME);
+}

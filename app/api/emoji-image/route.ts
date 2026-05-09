@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { dailySeed, MAX_ATTEMPTS, pickDailyEmoji } from "@/lib/daily";
+import { dailySeed, MAX_ATTEMPTS } from "@/lib/daily";
+import { getActiveEmoji } from "@/lib/active-emoji";
 import { renderPixelatedEmoji } from "@/lib/emoji-image";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 import { readSession } from "@/lib/session";
@@ -17,7 +18,7 @@ export async function GET(req: NextRequest) {
 
   const today = dailySeed();
   const state = readSession(today);
-  const target = pickDailyEmoji();
+  const target = getActiveEmoji();
 
   // The level the player has *earned* — never trust a query param for this.
   // Won and game-over states get the sharp render; otherwise it's
