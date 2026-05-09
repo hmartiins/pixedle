@@ -69,8 +69,14 @@ async function pixelate(src: Buffer, level: number): Promise<Buffer> {
       .toBuffer();
   }
   const cells = Math.max(1, Math.floor(RENDER_SIZE / block));
-  return sharp(src)
+  // Sharp coalesces successive .resize() calls in a single pipeline — the
+  // last one wins, which silently drops our pixelization step. We force two
+  // passes by materializing the intermediate buffer between them.
+  const small = await sharp(src)
     .resize(cells, cells, { kernel: "lanczos3" })
+    .png()
+    .toBuffer();
+  return sharp(small)
     .resize(RENDER_SIZE, RENDER_SIZE, { kernel: "nearest" })
     .flatten({ background: { r: 15, g: 15, b: 26 } })
     .png()
