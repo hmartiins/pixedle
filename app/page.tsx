@@ -8,10 +8,6 @@ import { ResultModal } from "@/components/ResultModal";
 import { playLose, playRight, playWrong } from "@/lib/sounds";
 import { loadStats, recordResult, type Stats } from "@/lib/stats";
 
-// Visible placeholder used while the player still hasn't revealed the day's
-// emoji. Anything will do — we just need a recognizable glyph to pixelate.
-// Crucially: this is NOT the answer, just a decoy.
-const PLACEHOLDER_EMOJI = "❓";
 const MAX_ATTEMPTS = 6;
 
 type DailyInfo = {
@@ -227,7 +223,6 @@ export default function Home() {
     setTimeout(() => setShareToast(null), 2200);
   }, [revealed, won, attemptsLeft, todayLabel]);
 
-  const displayEmoji = revealed?.emoji ?? PLACEHOLDER_EMOJI;
   const attemptsUsed = MAX_ATTEMPTS - attemptsLeft;
 
   return (
@@ -242,7 +237,7 @@ export default function Home() {
       <section
         className={`flex flex-col items-center gap-5 ${shake ? "animate-shake" : ""}`}
       >
-        <PixelCanvas emoji={displayEmoji} pixelLevel={pixelLevel} />
+        <PixelCanvas pixelLevel={pixelLevel} />
 
         <Hearts total={MAX_ATTEMPTS} remaining={attemptsLeft} />
       </section>

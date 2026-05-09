@@ -1,10 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PIXEDLE — adivinhe o emoji do dia",
   description:
     "Pixedle é o desafio diário de adivinhar o emoji escondido. A cada erro, ele fica menos pixelado. Você consegue acertar antes de acabar as tentativas?",
+};
+
+export const viewport: Viewport = {
   themeColor: "#0f0f1a",
 };
 

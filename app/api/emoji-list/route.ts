@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { PUBLIC_EMOJI_LIST } from "@/lib/emojis";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const limit = rateLimit(getClientIp(req));
