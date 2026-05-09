@@ -29,7 +29,10 @@ export async function GET(req: NextRequest) {
 
   try {
     const png = await renderPixelatedEmoji(target.emoji, level);
-    return new NextResponse(png, {
+    // NextResponse expects a BodyInit, which doesn't include Node's Buffer
+    // even though Buffer extends Uint8Array — wrap in a non-copying view.
+    const body = new Uint8Array(png.buffer, png.byteOffset, png.byteLength);
+    return new NextResponse(body, {
       status: 200,
       headers: {
         "content-type": "image/png",
