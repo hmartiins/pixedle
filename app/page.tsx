@@ -211,7 +211,7 @@ export default function Home() {
         ? `Acertei em ${attempts}/${MAX_ATTEMPTS}`
         : `Não acertei (${MAX_ATTEMPTS}/${MAX_ATTEMPTS})`,
       grid,
-      "https://pixedle.app",
+      window.location.href,
     ].join("\n");
     try {
       if (navigator.share) {
