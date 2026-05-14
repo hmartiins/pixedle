@@ -5,8 +5,16 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
+// VERCEL_URL points to the deployment-specific hostname (e.g.
+// `pixedle-cukz44…vercel.app`) which sits behind Vercel's deployment
+// protection — fine for previews, but social scrapers can't reach it.
+// VERCEL_PROJECT_PRODUCTION_URL is the public production alias and is what
+// we want OG URLs to resolve to.
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : null) ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
   "http://localhost:3000";
 
