@@ -5,10 +5,29 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+  "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "PIXEDLE — adivinhe o emoji do dia",
   description:
     "Pixedle é o desafio diário de adivinhar o emoji escondido. A cada erro, ele fica menos pixelado. Você consegue acertar antes de acabar as tentativas?",
+  openGraph: {
+    title: "PIXEDLE — adivinhe o emoji do dia",
+    description:
+      "O desafio diário de adivinhar o emoji escondido. A cada erro, ele fica menos pixelado.",
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PIXEDLE — adivinhe o emoji do dia",
+    description:
+      "O desafio diário de adivinhar o emoji escondido. A cada erro, ele fica menos pixelado.",
+  },
 };
 
 export const viewport: Viewport = {
