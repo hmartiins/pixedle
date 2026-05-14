@@ -104,7 +104,7 @@ export default function Home() {
                 trivia: data.trivia,
               });
               if (info.alreadyWon) {
-                finishGame("win", MAX_ATTEMPTS - info.attemptsLeft);
+                finishGame("win", MAX_ATTEMPTS - info.attemptsLeft + 1);
               } else {
                 finishGame("loss", MAX_ATTEMPTS);
               }
@@ -157,7 +157,7 @@ export default function Home() {
               trivia: data.trivia,
             });
           }
-          finishGame("win", MAX_ATTEMPTS - data.attemptsLeft);
+          finishGame("win", MAX_ATTEMPTS - data.attemptsLeft + 1);
           playRight();
           // Slight delay so the player sees the sharp emoji before the modal.
           setTimeout(() => setModalOpen(true), 700);
@@ -199,10 +199,10 @@ export default function Home() {
 
   const onShare = useCallback(async () => {
     if (!revealed) return;
-    const attempts = won ? MAX_ATTEMPTS - attemptsLeft : MAX_ATTEMPTS;
+    const attempts = won ? MAX_ATTEMPTS - attemptsLeft + 1 : MAX_ATTEMPTS;
     const grid = Array.from({ length: MAX_ATTEMPTS }, (_, i) => {
       if (i < (won ? attempts - 1 : MAX_ATTEMPTS)) return "🟪";
-      if (i === attempts - 1 && won) return "🟨";
+      if (i === attempts - 1 && won) return "🟩";
       return "⬛";
     }).join("");
     const lines = [
@@ -227,7 +227,7 @@ export default function Home() {
     setTimeout(() => setShareToast(null), 2200);
   }, [revealed, won, attemptsLeft, todayLabel]);
 
-  const attemptsUsed = MAX_ATTEMPTS - attemptsLeft;
+  const attemptsUsed = MAX_ATTEMPTS - attemptsLeft + (won ? 1 : 0);
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-6 sm:py-10">
