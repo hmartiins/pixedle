@@ -662,8 +662,13 @@ export const EMOJIS: EmojiEntry[] = [
 ];
 
 // Public catalog as exposed by /api/emoji-list — no metadata that could
-// leak the day's pick.
-export type PublicEmojiEntry = { emoji: string; name: string };
+// leak the day's pick. Aliases are included so the autocomplete can match
+// the same synonyms the server already accepts in `matchesEmoji`.
+export type PublicEmojiEntry = {
+  emoji: string;
+  name: string;
+  aliases: string[];
+};
 export const PUBLIC_EMOJI_LIST: PublicEmojiEntry[] = EMOJIS.map(
-  ({ emoji, name }) => ({ emoji, name }),
+  ({ emoji, name, aliases }) => ({ emoji, name, aliases: aliases ?? [] }),
 );

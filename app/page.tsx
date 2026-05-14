@@ -71,7 +71,7 @@ export default function Home() {
       try {
         const [infoRes, listRes] = await Promise.all([
           fetch("/api/daily-info", { cache: "no-store" }),
-          fetch("/api/emoji-list", { cache: "force-cache" }),
+          fetch("/api/emoji-list"),
         ]);
         if (!infoRes.ok || !listRes.ok) {
           throw new Error("network");

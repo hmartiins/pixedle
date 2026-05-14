@@ -2,7 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-export type SuggestionItem = { emoji: string; name: string };
+export type SuggestionItem = {
+  emoji: string;
+  name: string;
+  aliases?: string[];
+};
 
 type Props = {
   suggestions: SuggestionItem[];
@@ -18,31 +22,34 @@ function normalize(input: string): string {
     .trim();
 }
 
-const MAX_VISIBLE = 8;
-
 export function GuessInput({ suggestions, disabled, onSubmit }: Props) {
   const [value, setValue] = useState("");
   const [focused, setFocused] = useState(false);
   const [highlight, setHighlight] = useState(0);
   const wrapRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const matches = useMemo(() => {
     const q = normalize(value);
-    if (!q) return [];
-    return suggestions
-      .filter(
-        (s) =>
-          normalize(s.name).includes(q) ||
-          s.emoji === value ||
-          s.emoji.includes(q),
-      )
-      .slice(0, MAX_VISIBLE);
+    if (!q) return suggestions;
+    return suggestions.filter((s) => {
+      if (s.emoji === value || s.emoji.includes(q)) return true;
+      if (normalize(s.name).includes(q)) return true;
+      return (s.aliases ?? []).some((a) => normalize(a).includes(q));
+    });
   }, [value, suggestions]);
 
   useEffect(() => {
     setHighlight(0);
   }, [matches.length]);
+
+  useEffect(() => {
+    const item = listRef.current?.children[highlight] as
+      | HTMLElement
+      | undefined;
+    item?.scrollIntoView({ block: "nearest" });
+  }, [highlight]);
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -99,7 +106,8 @@ export function GuessInput({ suggestions, disabled, onSubmit }: Props) {
         />
         {showList && (
           <ul
-            className="suggestion-list absolute left-0 right-0 top-full z-10 text-xs sm:text-sm"
+            ref={listRef}
+            className="suggestion-list absolute left-0 right-0 top-full z-10 max-h-64 overflow-y-auto text-xs sm:text-sm"
             role="listbox"
           >
             {matches.map((m, i) => (
