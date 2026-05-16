@@ -14,8 +14,8 @@ type Props = {
   maxAttempts: number;
   stats: Stats;
   onClose: () => void;
-  onShare: () => void;
-  shareToast?: string | null;
+  onCopy: () => void;
+  copyToast?: string | null;
 };
 
 export function ResultModal({
@@ -28,8 +28,8 @@ export function ResultModal({
   maxAttempts,
   stats,
   onClose,
-  onShare,
-  shareToast,
+  onCopy,
+  copyToast,
 }: Props) {
   useEffect(() => {
     if (!open) return;
@@ -87,10 +87,10 @@ export function ResultModal({
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
           <button
             type="button"
-            onClick={onShare}
+            onClick={onCopy}
             className="pixel-button pixel-button--accent flex-1 px-3 py-3 text-[10px] sm:text-xs"
           >
-            Compartilhar
+            Copiar
           </button>
           <button
             type="button"
@@ -101,9 +101,9 @@ export function ResultModal({
           </button>
         </div>
 
-        {shareToast && (
+        {copyToast && (
           <p className="mt-3 animate-flash text-center text-[10px] text-pixel">
-            {shareToast}
+            {copyToast}
           </p>
         )}
 

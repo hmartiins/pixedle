@@ -48,7 +48,7 @@ export default function Home() {
   const [stats, setStats] = useState<Stats>(() => loadStats());
   const [modalOpen, setModalOpen] = useState(false);
   const [shake, setShake] = useState(false);
-  const [shareToast, setShareToast] = useState<string | null>(null);
+  const [copyToast, setCopyToast] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Guard so we only record stats once per day even after rerenders.
@@ -197,7 +197,7 @@ export default function Home() {
     });
   }, []);
 
-  const onShare = useCallback(async () => {
+  const onCopy = useCallback(async () => {
     if (!revealed) return;
     const attempts = won ? MAX_ATTEMPTS - attemptsLeft + 1 : MAX_ATTEMPTS;
     const grid = Array.from({ length: MAX_ATTEMPTS }, (_, i) => {
@@ -214,17 +214,12 @@ export default function Home() {
       window.location.href,
     ].join("\n");
     try {
-      if (navigator.share) {
-        await navigator.share({ text: lines });
-        setShareToast("Compartilhado!");
-      } else {
-        await navigator.clipboard.writeText(lines);
-        setShareToast("Copiado para a área de transferência!");
-      }
+      await navigator.clipboard.writeText(lines);
+      setCopyToast("Copiado para a área de transferência!");
     } catch {
-      setShareToast("Não consegui compartilhar.");
+      setCopyToast("Não consegui copiar.");
     }
-    setTimeout(() => setShareToast(null), 2200);
+    setTimeout(() => setCopyToast(null), 2200);
   }, [revealed, won, attemptsLeft, todayLabel]);
 
   const attemptsUsed = MAX_ATTEMPTS - attemptsLeft + (won ? 1 : 0);
@@ -309,8 +304,8 @@ export default function Home() {
           maxAttempts={MAX_ATTEMPTS}
           stats={stats}
           onClose={() => setModalOpen(false)}
-          onShare={onShare}
-          shareToast={shareToast}
+          onCopy={onCopy}
+          copyToast={copyToast}
         />
       )}
 
